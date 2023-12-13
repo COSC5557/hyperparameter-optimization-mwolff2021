@@ -8,21 +8,21 @@ Original file is located at
 """
 
 #install and import packages
-!pip install --upgrade scikit-learn
-!pip install pandas
+#!pip install --upgrade scikit-learn
+#!pip install pandas
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 import sklearn
 
 #print python version for report
-!python ‐‐version
+#!python ‐‐version
 import sys; print(sys.version)
 
 #read and display data
-data = pd.read_csv("/content/winequality-red.csv", sep = ";")
-data
+data = pd.read_csv("winequality-red.csv", sep = ";")
+#data
 
 #display information about dataset for report
 data.columns
@@ -157,5 +157,5 @@ for i in range(len(models)):
 
 
 #plot confusion matrix to visualize true/false positives/negatives among classes
-fig, ax = plt.subplots(figsize=(10, 5))
-sklearn.metrics.ConfusionMatrixDisplay.from_predictions(best_y_test, best_y_pred, ax=ax)
+#fig, ax = plt.subplots(figsize=(10, 5))
+#sklearn.metrics.ConfusionMatrixDisplay.from_predictions(best_y_test, best_y_pred, ax=ax)
