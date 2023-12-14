@@ -67,4 +67,5 @@ https://inria.github.io/scikit-learn-mooc/python_scripts/parameter_tuning_nested
 https://scikit-learn.org/stable/modules/grid_search.html
 https://inria.github.io/scikit-learn-mooc/python_scripts/parameter_tuning_nested.html
 https://learn.ki-campus.org/courses/automl-luh2021/items/6THUjybtGN0rAnzQS7vUSehttps://www.overleaf.com/learn/latex/Code_listing
+https://stackoverflow.com/questions/944700/how-to-check-for-nan-values
 
