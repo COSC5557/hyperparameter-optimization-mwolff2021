@@ -50,3 +50,22 @@ statistical tests to make this determination.
 
 Add your report and code to this repository. Bonus points if you can set up a
 Github action to automatically run the code and generate the report!
+
+## References
+https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RidgeClassifier.html#sklearn.linear_model.RidgeClassifier
+https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingClassifier.html#sklearn.ensemble.BaggingClassifier
+https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
+https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html
+https://scikit-learn.org/stable/modules/generated/sklearn.utils.resample.html
+https://scikit-learn.org/stable/modules/grid_search.html
+https://wires.onlinelibrary.wiley.com/doi/full/10.1002/widm.1484
+https://towardsdatascience.com/nested-cross-validation-hyperparameter-optimization-and-model-selection-5885d84acda
+https://pyimagesearch.com/2021/05/31/hyperparameter-tuning-for-deep-learning-with-scikit-learn-keras-and-tensorflow/https://pyimagesearch.com/2021/05/17/introduction-to-hyperparameter-tuning-with-scikit-learn-and-python/
+https://machinelearningmastery.com/scikit-optimize-for-hyperparameter-tuning-in-machine-learning/
+https://towardsdatascience.com/hyperparameter-optimization-with-scikit-learn-scikit-opt-and-keras-f13367f3e796
+https://inria.github.io/scikit-learn-mooc/python_scripts/parameter_tuning_nested.html
+https://scikit-learn.org/stable/modules/grid_search.html
+https://inria.github.io/scikit-learn-mooc/python_scripts/parameter_tuning_nested.html
+https://learn.ki-campus.org/courses/automl-luh2021/items/6THUjybtGN0rAnzQS7vUSehttps://www.overleaf.com/learn/latex/Code_listing
+https://stackoverflow.com/questions/944700/how-to-check-for-nan-values
+
