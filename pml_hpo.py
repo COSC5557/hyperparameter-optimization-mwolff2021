@@ -51,6 +51,7 @@ from sklearn import linear_model, ensemble
 from sklearn.model_selection import cross_val_score
 from sklearn import model_selection
 import numpy
+import math
 
 #models to compare
 models = [linear_model.RidgeClassifier(), ensemble.BaggingClassifier(), ensemble.RandomForestClassifier()]
@@ -62,12 +63,15 @@ def nested_resampling(m, x, y):
         x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(x, y, test_size=0.2, random_state=42)
         #10-fold inner cross-validation to determine best parameters
         scores = sklearn.model_selection.cross_validate(m, x_train, y_train, cv=10, scoring = "balanced_accuracy", return_estimator=True)
-        best = list(scores["test_score"]).index(max(scores["test_score"]))
-        best_model = scores["estimator"][best]
-        #test best performing model on outer test set
-        y_pred = best_model.predict(x_test)
-        #add to list of best model scores
-        model_score.append(sklearn.metrics.balanced_accuracy_score(y_test, y_pred))
+        if math.isnan(max(scores["test_score"])): 
+            model_score.append(0)
+        else:
+            best = list(scores["test_score"]).index(max(scores["test_score"]))
+            best_model = scores["estimator"][best]
+            #test best performing model on outer test set
+            y_pred = best_model.predict(x_test)
+            #add to list of best model scores
+            model_score.append(sklearn.metrics.balanced_accuracy_score(y_test, y_pred))
     return numpy.array(model_score).mean()
 
 def ridge_hpo(x, y):
@@ -107,14 +111,14 @@ def random_forest_hpo(x, y):
                 mean_balanced_accuracy = nested_resampling(m, x, y)
             if mean_balanced_accuracy > best_rf:
                 best_rf = mean_balanced_accuracy
-                best_config = [n_estimators, max_samples, max_features]
+                best_config = [n_estimators, criterion, max_depth]
     print("n_estimators, criterion, max_depth", best_config, "mean score", best_rf)
 
-ridge_hpo(x, y)
+#ridge_hpo(x, y)
 
-bagging_hpo(x, y)
+#bagging_hpo(x, y)
 
-random_forest_hpo(x, y)
+#random_forest_hpo(x, y)
 
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import cross_validate
@@ -139,7 +143,7 @@ def nested_resampling_2(model, param_grid, x, y):
     model_grid_search = GridSearchCV(model, param_grid=param_grid, n_jobs=2, cv=3)
     model_grid_search.fit(x, y)
     cv_results = cross_validate(
-        model_grid_search, x, y, cv=10, return_estimator=True
+        model_grid_search, x, y, cv=10, return_estimator=True, scoring = "balanced_accuracy"
     )
 
     cv_results = pd.DataFrame(cv_results)
@@ -148,6 +152,8 @@ def nested_resampling_2(model, param_grid, x, y):
         "Generalization score with hyperparameters tuning:\n"
         f"{cv_test_scores.mean():.3f} ± {cv_test_scores.std():.3f}"
     )
+    print(model_grid_search.best_estimator_)
+    print(model_grid_search.best_params_)
 
 models = [linear_model.RidgeClassifier(), ensemble.BaggingClassifier(), ensemble.RandomForestClassifier()]
 param_grids = [ridge_param_grid, bagging_param_grid, random_forest_param_grid]
