@@ -52,6 +52,16 @@ Add your report and code to this repository. Bonus points if you can set up a
 Github action to automatically run the code and generate the report!
 
 ## References
+https://blog.finxter.com/how-to-check-python-version-in-colab/
+https://thuijskens.github.io/2016/12/29/bayesian-optimisation/
+https://scikit-learn.org/stable/modules/grid_search.html
+https://towardsdatascience.com/bayesian-optimization-with-python-85c66df711ec
+https://pypi.org/project/scikit-optimize/
+https://www.overleaf.com/learn/latex/Bibliography_management_with_bibtex
+
+https://en.wikipedia.org/wiki/Pandas_(software)
+https://stackoverflow.com/questions/62837550/count-rows-with-same-values-in-specific-column-using-pandas
+https://scikit-optimize.github.io/stable/auto_examples/sklearn-gridsearchcv-replacement.html#sphx-glr-auto-examples-sklearn-gridsearchcv-replacement-py
 https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RidgeClassifier.html#sklearn.linear_model.RidgeClassifier
 https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingClassifier.html#sklearn.ensemble.BaggingClassifier
 https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
