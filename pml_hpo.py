@@ -34,13 +34,6 @@ x = data.drop(columns = ['quality'])
 #x_norm = sklearn.preprocessing.normalize(x, axis=0)
 y = data['quality']
 
-#function to report relevant metrics
-def return_metrics(y_test, y_pred):
-  from sklearn import metrics
-  print("Accuracy: %.2f" % metrics.accuracy_score(y_test, y_pred))
-  print(metrics.balanced_accuracy_score(y_test, y_pred))
-  print(metrics.classification_report(y_test, y_pred))
-  print(metrics.confusion_matrix(y_test, y_pred))
 
 #suppress warnings about class imbalances
 import warnings
@@ -52,6 +45,92 @@ from sklearn.model_selection import cross_val_score
 from sklearn import model_selection
 import numpy
 import math
+
+#install and import packages
+#!pip install --upgrade scikit-learn
+#!pip install pandas
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import sklearn
+
+#suppress warnings about class imbalances
+import warnings
+warnings.filterwarnings("ignore")
+
+#import models, packages
+from sklearn import linear_model, ensemble
+from sklearn.model_selection import cross_val_score
+from sklearn import model_selection
+import numpy
+
+#!pip install scikit-optimize
+import skopt
+from skopt.space import Real, Categorical, Integer
+from skopt import BayesSearchCV
+
+#import grid search and cross_validate
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import cross_validate
+
+ridge_opt = BayesSearchCV(linear_model.RidgeClassifier(),
+    {
+    "alpha": Real(1.0, 5.0, prior='log-uniform'), 
+    "tol": Real(0.0001, 0.1, prior='log-uniform'), 
+    "solver": Categorical(["svd", "cholesky", "lsqr", "sparse_cg"]),
+    "max_iter": Integer(100, 100000, prior='log-uniform'),
+    },
+     n_iter=32,
+     random_state=0, 
+    scoring = "balanced_accuracy"
+
+)
+
+bagging_opt = BayesSearchCV(ensemble.BaggingClassifier(), 
+                {"n_estimators" : Integer(100, 10000, prior = 'log-uniform'), 
+               "max_samples" : Real(0.01, 1.0, prior='log-uniform'), 
+                "max_features" : Real(0.01, 1.0, prior='log-uniform'),
+                },
+        n_iter=32,
+        random_state=0, 
+                            scoring = "balanced_accuracy"
+                            
+)
+                            
+rf_opt = BayesSearchCV(ensemble.RandomForestClassifier(), 
+        {
+    "n_estimators" : Integer(100, 10000, prior = 'log-uniform'),
+    "criterion" : Categorical(["gini", "entropy", "log_loss"]),
+    "max_depth" : Real(2, 10, prior='log-uniform')
+        },
+        n_iter=32,
+        random_state=0, 
+                       scoring = "balanced_accuracy"
+)
+
+def nested_resampling_bayesian(optimizer, x, y):
+     for i in range(0, 3): #3-fold outer cross-validation
+        x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(x, y, test_size=0.2, random_state=42)
+        optimizer.fit(x_train, y_train)
+        print(optimizer.score(x_test, y_test))
+        #10_fold inner resampling
+        cv_results = cross_validate(
+           optimizer, x_train, y_train, cv=10, return_estimator=True, scoring = "balanced_accuracy"
+        )
+        cv_results = pd.DataFrame(cv_results)
+        cv_test_scores = cv_results["test_score"]
+        #display results
+        print(
+            "Generalization score with hyperparameters tuning:\n"
+            f"{cv_test_scores.mean():.3f} ± {cv_test_scores.std():.3f}"
+        )
+        print(optimizer.best_estimator_)
+        print(optimizer.best_params_)
+        print(optimizer.best_score_)
+nested_resampling_bayesian(ridge_opt, x, y)
+nested_resampling_bayesian(bagging_opt, x, y)
+nested_resampling_bayesian(rf_opt, x, y)
+
 
 #models to compare
 models = [linear_model.RidgeClassifier(), ensemble.BaggingClassifier(), ensemble.RandomForestClassifier()]
@@ -157,8 +236,8 @@ def nested_resampling_2(model, param_grid, x, y):
 
 models = [linear_model.RidgeClassifier(), ensemble.BaggingClassifier(), ensemble.RandomForestClassifier()]
 param_grids = [ridge_param_grid, bagging_param_grid, random_forest_param_grid]
-for i in range(len(models)):
-    nested_resampling_2(models[i], param_grids[i], x, y)
+#for i in range(len(models)):
+#    nested_resampling_2(models[i], param_grids[i], x, y)
 
 
 
